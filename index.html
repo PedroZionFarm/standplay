@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Stand Play · Jogos para estandes</title>
-<meta name="description" content="Jogos rápidos com a marca da sua empresa para totens e tablets em feiras e eventos: quiz, memória, roleta, raspadinha, reflexo e caça-palavras, com cadastro de leads e controle de brindes.">
-<meta property="og:title" content="Stand Play · Jogos para estandes">
-<meta property="og:description" content="O estande que todo mundo para para jogar. Seis jogos com a marca da sua empresa, funcionando sem internet.">
+<title>Stand Play · Jogos de estande para locadoras de totem</title>
+<meta name="description" content="Jogos prontos para locadoras de totem revenderem com a marca do expositor: quiz, memória, roleta, raspadinha, reflexo e caça-palavras, com LGPD resolvida e relatório do evento.">
+<meta property="og:title" content="Stand Play · Jogos de estande para locadoras de totem">
+<meta property="og:description" content="O jogo pronto para o seu totem, com a marca do seu cliente. Você revende; a Stand Play não aparece.">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#1C2350">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='6' y='6' width='52' height='52' rx='14' fill='%23FFC21A' transform='rotate(-6 32 32)'/%3E%3Cpath d='M26 20l18 12-18 12z' fill='%23121631'/%3E%3C/svg%3E">
@@ -131,6 +131,13 @@
   .contato { background: var(--placa); color: var(--placa-tinta); border-radius: 26px; padding: 40px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; }
   .contato h2 { font-size: clamp(28px, 4vw, 44px); font-variation-settings: "wdth" 80; }
   .contato .val { font: 600 18px var(--fonte-mono); user-select: all; }
+  .relatorio-quadro { border-radius: 20px; overflow: hidden; border: 1px solid var(--linha); background: #F4F5F7; }
+  .relatorio-quadro iframe { display: block; width: 100%; height: 620px; border: 0; }
+  .lgpd { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 12px 28px; }
+  .lgpd li { padding: 14px 0 14px 34px; border-bottom: 1px solid var(--linha); position: relative; color: var(--tinta-suave); }
+  .lgpd li::before { content: "✓"; position: absolute; left: 0; top: 12px; width: 22px; height: 22px; border-radius: 6px; background: var(--placa); color: var(--placa-tinta); display: grid; place-items: center; font-weight: 800; font-size: 13px; }
+  .lgpd b { color: var(--tinta); }
+  @media (max-width: 700px) { .lgpd { grid-template-columns: 1fr; } .relatorio-quadro iframe { height: 520px; } }
   .contato-acoes { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 18px; }
   .btn.escuro { background: var(--placa-tinta); color: var(--placa); }
   .btn.claro { background: transparent; color: var(--placa-tinta); box-shadow: inset 0 0 0 2px var(--placa-tinta); }
@@ -169,24 +176,24 @@
 <div class="casca">
   <header class="barra">
     <div class="marca"><i>▶</i>Stand Play</div>
-    <span class="rotulo">Jogos para estandes</span>
+    <span class="rotulo">Jogos de estande para locadoras</span>
   </header>
 
   <section class="hero">
     <div>
-      <p class="rotulo">Feiras · eventos · convenções</p>
-      <h1>O estande que <mark>todo mundo</mark> para para jogar.</h1>
-      <p class="lede">Jogos rápidos com a marca da sua empresa num totem ou tablet. O visitante joga um minuto, aprende o que você quer que ele saiba, deixa o contato e sai com o brinde. Você sai do evento com uma planilha de leads.</p>
+      <p class="rotulo">Para locadoras de totem</p>
+      <h1>O jogo pronto para o seu totem, com a <mark>marca do seu cliente</mark>.</h1>
+      <p class="lede">Você aluga a tela. A Stand Play entrega o jogo com a marca do expositor, o cadastro com a LGPD resolvida e o relatório do evento. Você revende com o seu nome: a Stand Play não aparece para o seu cliente.</p>
       <div class="acoes">
         <a class="btn p" href="#cardapio">Ver os jogos</a>
+        <a class="btn s" href="#relatorio">Ver um relatório de exemplo</a>
         <a class="btn s" href="#contato">Falar com a gente</a>
-        <button class="btn s" type="button" data-demo="quiz">Jogar a demo em tela cheia</button>
       </div>
       <ul class="fatos">
+        <li>Sem a nossa marca no jogo</li>
         <li>Funciona sem internet</li>
-        <li>Leads em planilha</li>
-        <li>Aceite LGPD no cadastro</li>
-        <li>Brinde com estoque controlado</li>
+        <li>LGPD com prova do aceite</li>
+        <li>Relatório do evento</li>
       </ul>
     </div>
     <div class="totem">
@@ -204,7 +211,7 @@
         <p class="rotulo">O cardápio</p>
         <h2>Seis jogos, um minuto cada</h2>
       </div>
-      <p>Cada um ganha as cores, o logo e o conteúdo da sua empresa. Dá para encadear dois: o visitante vence o quiz e ganha um giro na roleta.</p>
+      <p>Cada um ganha as cores, o logo e o conteúdo do expositor. Dá para encadear dois: o visitante vence o quiz e ganha um giro na roleta. As demos abaixo usam a Zion Farm como cliente de exemplo.</p>
     </div>
     <div class="jogos">
       <article class="jogo">
@@ -257,38 +264,72 @@
   <section class="secao">
     <div class="cab">
       <div>
-        <p class="rotulo">Em todo jogo</p>
-        <h2>O que vem junto</h2>
+        <p class="rotulo">Para a sua locadora</p>
+        <h2>O que você ganha revendendo</h2>
       </div>
+      <p>Um cardápio de jogos sem montar equipe de desenvolvimento, e três coisas que o expositor cobra e quase ninguém entrega.</p>
     </div>
     <div class="ficha">
-      <div><h3>Sem internet</h3><p>O jogo roda inteiro no aparelho. Pavilhão sem sinal não para o estande.</p></div>
-      <div><h3>Leads em planilha</h3><p>Nome, WhatsApp, e-mail: você escolhe os campos. No fim do dia, um toque exporta a planilha.</p></div>
-      <div><h3>LGPD</h3><p>Aceite de participação obrigatório e aceite de novidades separado e opcional, com o link da sua política.</p></div>
-      <div><h3>Brindes sob controle</h3><p>Estoque e chance de cada brinde ajustáveis durante o evento. Cada ganhador recebe um código de retirada.</p></div>
-      <div><h3>Painel do operador</h3><p>Escondido, com senha: estoque, tempo do jogo, sorteio do dia e a planilha. O visitante nunca vê.</p></div>
-      <div><h3>Qualquer tela</h3><p>Totem em pé, tablet ou TV deitada. Entregue como app Android e como link para testar no celular.</p></div>
+      <div><h3>A sua marca, não a nossa</h3><p>O jogo mostra só a marca do expositor. Nos grupos com o cliente, a Stand Play entra como parte da sua equipe.</p></div>
+      <div><h3>Relatório do evento</h3><p>No fim de cada dia, o operador exporta o relatório: pessoas por hora, cadastros, aceites, brindes entregues.</p></div>
+      <div><h3>LGPD resolvida</h3><p>Aceites separados, prova de data e hora em cada cadastro, menor de idade sem dado guardado.</p></div>
+      <div><h3>Sem internet</h3><p>O jogo roda inteiro no totem. Pavilhão sem sinal não para o estande.</p></div>
+      <div><h3>Brindes sob controle</h3><p>Estoque e chance de cada brinde ajustáveis durante o evento. Brinde que acabou nunca é sorteado.</p></div>
+      <div><h3>Painel do operador</h3><p>Com senha, escondido do visitante: estoque, tempo do jogo, sorteio do dia, planilha e relatório.</p></div>
     </div>
+  </section>
+
+  <section class="secao" id="relatorio" style="padding-top:0">
+    <div class="cab">
+      <div>
+        <p class="rotulo">Relatório do evento</p>
+        <h2>O número que o expositor leva para o chefe</h2>
+      </div>
+      <p>Quase nenhuma locadora mostra o resultado do jogo. Este é o relatório que o operador exporta no fim do dia, sem marca de fornecedor.</p>
+    </div>
+    <div class="relatorio-quadro">
+      <iframe src="exemplo/relatorio.html" title="Relatório de exemplo" loading="lazy"></iframe>
+    </div>
+    <p class="rotulo" style="margin-top:12px">Exemplo gerado pela demo com partidas simuladas · <a href="exemplo/relatorio.html" target="_blank" rel="noopener">abrir inteiro</a></p>
+  </section>
+
+  <section class="secao" style="padding-top:0">
+    <div class="cab">
+      <div>
+        <p class="rotulo">LGPD</p>
+        <h2>O cadastro sai com a prova de que pode ser usado</h2>
+      </div>
+      <p>No estande, quem decide o uso do cadastro é o expositor, e a locadora opera o jogo em nome dele. O jogo já faz a parte dele nessa cadeia.</p>
+    </div>
+    <ul class="lgpd">
+      <li><b>Aceite de participação</b> obrigatório, com o link da política de privacidade do expositor.</li>
+      <li><b>Aceite de novidades</b> separado e opcional, sem caixa pré-marcada.</li>
+      <li><b>Compartilhamento</b> com agência ou parceiro só com aceite próprio, dizendo com quem e para quê.</li>
+      <li><b>Prova do aceite:</b> cada linha da planilha traz data, hora e a versão do texto aceito.</li>
+      <li><b>Menor de idade</b> joga sem nenhum dado guardado, ou não joga, conforme o expositor escolher.</li>
+      <li><b>Os dados ficam no totem</b>, sem envio pela internet, e são apagados no fim do evento.</li>
+      <li><b>Cláusulas prontas</b> para o seu contrato com o expositor, para o seu jurídico revisar.</li>
+    </ul>
   </section>
 
   <section class="secao" style="padding-top:0">
     <div class="cab">
       <div>
         <p class="rotulo">Como funciona</p>
-        <h2>Da reunião ao estande</h2>
+        <h2>Do seu contrato ao estande</h2>
       </div>
     </div>
     <ol class="passos">
-      <li><h3>Briefing</h3><p>Uma conversa sobre o que o visitante precisa sair sabendo, o público e os brindes. Você nos passa o conteúdo e a marca.</p></li>
-      <li><h3>Prévia no celular</h3><p>Você recebe um link e joga o seu jogo antes de qualquer coisa ir para o evento.</p></li>
-      <li><h3>Aprovação</h3><p>Conferimos juntos cada pergunta, resposta, brinde e texto de privacidade, item por item.</p></li>
-      <li><h3>No evento</h3><p>App instalado e testado no aparelho, com um guia de uma página para quem opera o estande.</p></li>
+      <li><h3>Você fecha com o expositor</h3><p>E abre o grupo com ele. A Stand Play entra como parte da sua equipe e pede marca, brindes e conteúdo numa mensagem só.</p></li>
+      <li><h3>Prévia no celular</h3><p>O expositor joga o próprio jogo pelo celular antes de qualquer coisa ir para o evento.</p></li>
+      <li><h3>Aprovação</h3><p>Cada pergunta, resposta, brinde e texto de privacidade é conferido item por item com o expositor.</p></li>
+      <li><h3>No evento</h3><p>App testado no seu totem, guia de uma página para o operador e relatório no fim de cada dia.</p></li>
     </ol>
   </section>
 
   <section class="secao" id="contato" hidden style="padding-top:0">
     <div class="contato">
-      <h2>Vamos montar o seu?</h2>
+      <h2>Quer o cardápio no seu totem?</h2>
       <div class="contato-acoes">
         <div><p class="rotulo" style="color:inherit;opacity:.7;margin:0 0 6px">WhatsApp</p><div class="val" id="contatoValor"></div></div>
         <a class="btn escuro" id="contatoZap" href="#" target="_blank" rel="noopener">Chamar no WhatsApp</a>
@@ -298,7 +339,7 @@
   </section>
 
   <footer class="rodape">
-    © 2026 Stand Play · (11) 95333-4212. As demos usam a Zion Farm como exemplo de cliente, e os brindes delas são fictícios. O que você digitar numa demo fica só no seu navegador.
+    © 2026 Stand Play · jogos de estande para locadoras de totem · (11) 95333-4212. As demos usam a Zion Farm como exemplo de cliente, e os brindes delas são fictícios. O que você digitar numa demo fica só no seu navegador.
   </footer>
 </div>
 
@@ -313,7 +354,7 @@
   const CONTATO = { exibido: '(11) 95333-4212', whatsapp: '5511953334212' };
   if (CONTATO) {
     document.getElementById('contatoValor').textContent = CONTATO.exibido;
-    document.getElementById('contatoZap').href = 'https://wa.me/' + CONTATO.whatsapp + '?text=' + encodeURIComponent('Olá! Vi o cardápio da Stand Play e quero saber mais.');
+    document.getElementById('contatoZap').href = 'https://wa.me/' + CONTATO.whatsapp + '?text=' + encodeURIComponent('Olá! Sou de uma locadora de totens e quero saber como revender os jogos da Stand Play.');
     document.getElementById('contato').hidden = false;
     document.getElementById('copiar').addEventListener('click', (e) => {
       const b = e.currentTarget;
