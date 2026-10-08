@@ -116,6 +116,33 @@
   @keyframes gira { to { transform: rotate(360deg); } }
   @keyframes cai { from { transform: translateY(-90px); } to { transform: translateY(110px); } }
 
+  /* ---------- os totens ---------- */
+  .aparelhos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  .aparelho { background: var(--papel); border: 1px solid var(--linha); border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+  .aparelho .palco { height: 190px; display: grid; place-items: center; background: var(--fundo); border-radius: 12px; }
+  .silhueta { background: #0A0C1C; border-radius: 8px; position: relative; display: grid; place-items: center; }
+  .silhueta::before { content: ""; position: absolute; inset: 7px; border-radius: 4px; background: linear-gradient(160deg, var(--carpete), #121845 60%, #0E1238); }
+  .silhueta::after { content: attr(data-res); position: relative; font: 600 11px/1 var(--fonte-mono); color: var(--placa); letter-spacing: .04em; }
+  .silhueta.v { width: 78px; height: 150px; }
+  .silhueta.h { width: 160px; height: 92px; }
+  .silhueta.tv { width: 172px; height: 100px; border-radius: 6px; }
+  .silhueta.cel { width: 54px; height: 108px; border-radius: 12px; }
+  .pe-v { width: 46px; height: 12px; margin-top: -2px; background: linear-gradient(#0A0C1C, #252A4D); clip-path: polygon(20% 0, 80% 0, 100% 100%, 0 100%); }
+  .aparelho h3 { font-size: 21px; font-weight: 700; font-variation-settings: "wdth" 88; }
+  .aparelho p { margin: 0; color: var(--tinta-suave); font-size: 15px; flex: 1; }
+  .aparelho .ideal { font: 400 12px/1.4 var(--fonte-mono); color: var(--tinta-suave); }
+  .totem-ficha { margin-top: 40px; display: grid; grid-template-columns: 1.1fr .9fr; gap: 28px; align-items: start; }
+  .totem-ficha .bloco { background: var(--papel); border: 1px solid var(--linha); border-radius: 18px; padding: 24px; }
+  .totem-ficha h3 { font-size: 22px; font-weight: 700; font-variation-settings: "wdth" 85; margin-bottom: 12px; }
+  .totem-ficha ul { list-style: none; padding: 0; margin: 0; }
+  .totem-ficha li { padding: 10px 0 10px 30px; border-bottom: 1px solid var(--linha); position: relative; color: var(--tinta-suave); font-size: 15.5px; }
+  .totem-ficha li:last-child { border-bottom: 0; }
+  .totem-ficha li::before { content: "✓"; position: absolute; left: 0; top: 9px; width: 20px; height: 20px; border-radius: 6px; background: var(--placa); color: var(--placa-tinta); display: grid; place-items: center; font-weight: 800; font-size: 12px; }
+  .totem-ficha .perg li::before { content: "?"; background: var(--carpete); color: var(--carpete-tinta); }
+  .totem-ficha b { color: var(--tinta); }
+  @media (max-width: 900px) { .aparelhos { grid-template-columns: 1fr 1fr; } .totem-ficha { grid-template-columns: 1fr; } }
+  @media (max-width: 560px) { .aparelhos { grid-template-columns: 1fr; } }
+
   /* ---------- o que vem em todo jogo ---------- */
   .secao { padding-block: 76px; }
   .ficha { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 2px solid var(--tinta); }
@@ -190,6 +217,7 @@
       <div class="acoes">
         <a class="btn p" href="#cardapio">Ver os jogos</a>
         <a class="btn s" href="#produtos">Além do jogo</a>
+        <a class="btn s" href="#totens">Os totens</a>
         <a class="btn s" href="#relatorio">Ver um relatório de exemplo</a>
         <a class="btn s" href="#contato">Falar com a gente</a>
       </div>
@@ -301,6 +329,69 @@
     </ul>
   </div>
 </section>
+
+<div class="casca">
+  <section class="secao" id="totens">
+    <div class="cab">
+      <div>
+        <p class="rotulo">Os totens</p>
+        <h2>Em que aparelho o jogo roda</h2>
+      </div>
+      <p>A Stand Play não aluga totem: o jogo entra no totem que você já tem. É feito para o totem vertical de 43 polegadas, o mais comum nas locadoras, e o mesmo arquivo se ajusta sozinho à tela deitada, à TV do estande e ao celular.</p>
+    </div>
+    <div class="aparelhos">
+      <article class="aparelho">
+        <div class="palco"><div><div class="silhueta v" data-res="1080×1920"></div><div class="pe-v"></div></div></div>
+        <h3>Totem em pé, 43"</h3>
+        <p>O palco principal: tela Full HD em pé, toque de dedo, caixas de som do próprio totem. O jogo instala como app Android e abre em tela cheia, sem barra do sistema.</p>
+        <span class="ideal">Android 7 ou mais novo · 32" a 55"</span>
+      </article>
+      <article class="aparelho">
+        <div class="palco"><div class="silhueta h" data-res="1920×1080"></div></div>
+        <h3>Totem deitado ou TV touch</h3>
+        <p>O mesmo jogo, com o layout reorganizado para a tela larga: mesa touch, totem horizontal de 43" ou 55", TV com moldura de toque.</p>
+        <span class="ideal">Sem versão separada: um arquivo, dois formatos</span>
+      </article>
+      <article class="aparelho">
+        <div class="palco"><div class="silhueta tv" data-res="TELÃO"></div></div>
+        <h3>A TV ou o telão do estande</h3>
+        <p>Para o sorteio no telão e o ranking do dia: o operador abre o painel e a tela grande mostra os nomes girando com a marca do expositor.</p>
+        <span class="ideal">Qualquer TV com entrada HDMI ou navegador</span>
+      </article>
+      <article class="aparelho">
+        <div class="palco"><div class="silhueta cel" data-res="PRÉVIA"></div></div>
+        <h3>Celular e tablet</h3>
+        <p>Antes de ir para o totem, o expositor joga a prévia no próprio celular pelo link. É nela que ele aprova pergunta, brinde e texto.</p>
+        <span class="ideal">Também serve de totem de mesa com um tablet</span>
+      </article>
+    </div>
+
+    <div class="totem-ficha">
+      <div class="bloco">
+        <h3>O que entregamos para o seu totem</h3>
+        <ul>
+          <li><b>App Android (APK)</b> que instala por pen drive, Bluetooth ou pelo software de gestão do totem, e também o mesmo jogo em link para navegador.</li>
+          <li><b>Sem internet</b>: o jogo, o cadastro e o sorteio rodam inteiros no aparelho. Wi-Fi do pavilhão é opcional.</li>
+          <li><b>Atualizar sem perder nada</b>: a nova versão instala por cima e os cadastros do dia continuam lá.</li>
+          <li><b>Toque pensado para dedo</b>: botões de pelo menos 52 px, teclado próprio na tela (o do Android cobriria o jogo).</li>
+          <li><b>Vídeo de espera leve</b>, para o totem não engasgar: o tamanho é conferido antes de sair.</li>
+          <li><b>Teste no seu aparelho antes do evento</b>, com a lista do que olhar em uma página.</li>
+        </ul>
+      </div>
+      <div class="bloco">
+        <h3>O que precisamos saber do seu totem</h3>
+        <ul class="perg">
+          <li><b>Tamanho e posição</b> da tela: 43" em pé, 55" deitado, mesa.</li>
+          <li><b>Sistema</b>: Android (qual versão) ou Windows com navegador.</li>
+          <li><b>Como se instala</b>: entrada USB, Bluetooth ou instalação remota.</li>
+          <li><b>Som</b>: tem caixas? O jogo tem som, mas funciona mudo.</li>
+          <li><b>Quem opera</b> no evento: é quem recebe a senha do painel.</li>
+        </ul>
+        <p style="margin:16px 0 0;color:var(--tinta-suave);font-size:14.5px">Formatos maiores, como parede de LED ou sala imersiva com avatar, são projeto sob medida: fale com a gente.</p>
+      </div>
+    </div>
+  </section>
+</div>
 
 <div class="casca">
   <section class="secao">
