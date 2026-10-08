@@ -3,18 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Stand Play · Jogos de estande para locadoras de totem</title>
-<meta name="description" content="Jogos prontos para locadoras de totem revenderem com a marca do expositor: quiz, memória, roleta, raspadinha, reflexo e caça-palavras, com LGPD resolvida e relatório do evento.">
-<meta property="og:title" content="Stand Play · Jogos de estande para locadoras de totem">
-<meta property="og:description" content="O jogo pronto para o seu totem, com a marca do seu cliente. Você revende; a Stand Play não aparece.">
+<title>Stand Play · Jogos e experiências interativas para estandes</title>
+<meta name="description" content="Jogos de estande, cadastro com LGPD, avatar com IA, totens e telas, e projetos sob medida para feiras, eventos e convenções. Com a marca do expositor, sem internet, com relatório do evento.">
+<meta property="og:title" content="Stand Play · Jogos e experiências interativas para estandes">
+<meta property="og:description" content="O estande que todo mundo para para jogar: jogos, cadastro com LGPD, avatar com IA, totens e telas, projetos sob medida.">
 <meta property="og:type" content="website">
-<meta name="theme-color" content="#1C2350">
+<meta name="theme-color" content="#121631">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='6' y='6' width='52' height='52' rx='14' fill='%23FFC21A' transform='rotate(-6 32 32)'/%3E%3Cpath d='M26 20l18 12-18 12z' fill='%23121631'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Figtree:wght@400;500;600;700&family=Martian+Mono:wght@400;600&display=swap">
 <style>
   *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
   html, body { margin: 0; }
   img { max-width: 100%; }
   :root {
@@ -24,25 +25,29 @@
     --tinta-suave: #4A5070;
     --linha: #D5D9E4;
     --placa: #FFC21A;          /* amarelo de sinalização de feira */
+    --placa-escuro: #C48F00;
     --placa-tinta: #121631;
     --carpete: #1C2350;        /* azul de carpete de pavilhão */
+    --carpete-fundo: #0F1335;
     --carpete-tinta: #F3F4FA;
+    --carpete-suave: #C9CDE8;
     --sinal: #E8483A;
     --fonte-display: "Bricolage Grotesque", "Arial Narrow", system-ui, sans-serif;
     --fonte-texto: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
     --fonte-mono: "Martian Mono", ui-monospace, Menlo, monospace;
+    --sombra: 0 24px 50px -24px rgba(18,22,49,.35);
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
       color-scheme: dark;
       --fundo: #0D1030; --papel: #161B42; --tinta: #EDEFF8; --tinta-suave: #A7ADCB; --linha: #2A3163;
-      --carpete: #232B63; --carpete-tinta: #F3F4FA;
+      --carpete: #171D4A; --carpete-fundo: #0A0D26; --sombra: 0 24px 50px -24px rgba(0,0,0,.7);
     }
   }
   :root[data-theme="dark"] {
     color-scheme: dark;
     --fundo: #0D1030; --papel: #161B42; --tinta: #EDEFF8; --tinta-suave: #A7ADCB; --linha: #2A3163;
-    --carpete: #232B63; --carpete-tinta: #F3F4FA;
+    --carpete: #171D4A; --carpete-fundo: #0A0D26; --sombra: 0 24px 50px -24px rgba(0,0,0,.7);
   }
 
   [hidden] { display: none !important; }
@@ -52,44 +57,85 @@
   .rotulo { font: 600 12px/1.3 var(--fonte-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--tinta-suave); }
   a { color: inherit; }
   :focus-visible { outline: 3px solid var(--placa); outline-offset: 3px; border-radius: 6px; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; padding: 0 26px; border-radius: 14px; border: 0; cursor: pointer; font: 700 16px/1 var(--fonte-texto); text-decoration: none; transition: transform .18s ease, box-shadow .18s ease; }
+  .btn.p { background: var(--placa); color: var(--placa-tinta); box-shadow: 0 5px 0 var(--placa-escuro); }
+  .btn.p:hover { transform: translateY(-2px); box-shadow: 0 7px 0 var(--placa-escuro); }
+  .btn.p:active { transform: translateY(4px); box-shadow: 0 1px 0 var(--placa-escuro); }
+  .btn.s { background: transparent; color: var(--tinta); box-shadow: inset 0 0 0 2px var(--linha); }
+  .btn.s:hover { box-shadow: inset 0 0 0 2px var(--tinta); }
+  .btn.s.claro { color: #fff; box-shadow: inset 0 0 0 2px rgba(255,255,255,.35); }
+  .btn.s.claro:hover { box-shadow: inset 0 0 0 2px #fff; }
 
-  /* ---------- topo ---------- */
-  .barra { display: flex; align-items: center; justify-content: space-between; padding-block: 22px; }
-  .marca { display: flex; align-items: center; gap: 12px; font: 800 22px/1 var(--fonte-display); font-variation-settings: "wdth" 80; letter-spacing: -.01em; }
+  /* ---------- barra ---------- */
+  .barra { position: sticky; top: 0; z-index: 40; background: color-mix(in srgb, var(--carpete-fundo) 86%, transparent); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); color: #fff; border-bottom: 1px solid rgba(255,255,255,.08); }
+  .barra .casca { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 68px; }
+  .marca { display: flex; align-items: center; gap: 12px; font: 800 22px/1 var(--fonte-display); font-variation-settings: "wdth" 80; letter-spacing: -.01em; text-decoration: none; }
   .marca i { width: 34px; height: 34px; border-radius: 9px; background: var(--placa); display: grid; place-items: center; font-style: normal; color: var(--placa-tinta); font-size: 18px; transform: rotate(-6deg); }
+  .menu { display: flex; gap: 4px; list-style: none; margin: 0; padding: 0; }
+  .menu a { display: block; padding: 10px 14px; border-radius: 10px; font: 600 15px/1 var(--fonte-texto); color: #DADDF0; text-decoration: none; }
+  .menu a:hover { background: rgba(255,255,255,.08); color: #fff; }
+  .barra .btn { min-height: 44px; padding: 0 18px; font-size: 15px; }
+  @media (max-width: 900px) { .menu { display: none; } }
 
   /* ---------- hero ---------- */
-  .hero { display: grid; grid-template-columns: 1.15fr .85fr; gap: 56px; align-items: center; padding-block: 36px 72px; }
-  .hero h1 { font-size: clamp(44px, 7vw, 92px); line-height: .92; font-weight: 800; font-variation-settings: "wdth" 78; letter-spacing: -.02em; }
+  .heroi { position: relative; overflow: hidden; background: radial-gradient(1200px 600px at 80% -10%, #2A3380 0%, transparent 60%), radial-gradient(800px 500px at -10% 100%, #273070 0%, transparent 55%), var(--carpete-fundo); color: #fff; }
+  .heroi::before { content: ""; position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px); background-size: 56px 56px; mask-image: linear-gradient(#000 40%, transparent); -webkit-mask-image: linear-gradient(#000 40%, transparent); pointer-events: none; }
+  .bolhas { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+  .bolhas span { position: absolute; bottom: -140px; width: var(--d); height: var(--d); border-radius: 50%; left: var(--x); background: radial-gradient(circle at 32% 28%, rgba(255,255,255,.35), rgba(255,255,255,.06) 45%, rgba(255,194,26,.10) 100%); box-shadow: inset 0 0 0 2px rgba(255,255,255,.18); animation: sobe var(--t) linear infinite; animation-delay: var(--a); opacity: .9; }
+  @keyframes sobe { to { transform: translateY(calc(-100vh - 300px)) translateX(40px); } }
+  .hero { position: relative; display: grid; grid-template-columns: 1.15fr .85fr; gap: 56px; align-items: center; padding-block: 64px 80px; }
+  .hero .rotulo { color: var(--placa); }
+  .hero h1 { font-size: clamp(44px, 6.6vw, 88px); line-height: .94; font-weight: 800; font-variation-settings: "wdth" 78; letter-spacing: -.02em; margin-top: 16px; }
   .hero h1 mark { background: var(--placa); color: var(--placa-tinta); padding: 0 .12em; border-radius: .08em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
-  .hero .lede { font-size: 20px; color: var(--tinta-suave); max-width: 34em; margin: 26px 0 0; }
+  .hero .lede { font-size: 20px; color: #C9CDE8; max-width: 34em; margin: 26px 0 0; }
   .hero .acoes { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 32px; }
-  .btn { display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 26px; border-radius: 14px; border: 0; cursor: pointer; font: 700 16px/1 var(--fonte-texto); text-decoration: none; }
-  .btn.p { background: var(--placa); color: var(--placa-tinta); box-shadow: 0 5px 0 #C48F00; }
-  .btn.p:active { transform: translateY(4px); box-shadow: 0 1px 0 #C48F00; }
-  .btn.s { background: transparent; color: var(--tinta); box-shadow: inset 0 0 0 2px var(--linha); }
   .fatos { display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 34px; padding: 0; list-style: none; }
-  .fatos li { font: 600 13px/1.3 var(--fonte-mono); color: var(--tinta-suave); display: flex; align-items: center; gap: 8px; }
+  .fatos li { font: 600 13px/1.3 var(--fonte-mono); color: #C9CDE8; display: flex; align-items: center; gap: 8px; }
   .fatos li::before { content: ""; width: 8px; height: 8px; background: var(--placa); border-radius: 2px; }
 
   /* O totem: moldura em pé 9:16 com a demo rodando dentro */
-  .totem { justify-self: center; width: min(100%, 340px); }
-  .totem .tela { position: relative; aspect-ratio: 9 / 16; max-width: 100%; border-radius: 22px; background: #000; border: 12px solid #0A0C1C; box-shadow: 0 30px 60px -20px rgba(18,22,49,.55); overflow: hidden; }
+  .totem { justify-self: center; width: min(100%, 340px); position: relative; }
+  .totem::before { content: ""; position: absolute; inset: -40px -60px; background: radial-gradient(closest-side, rgba(255,194,26,.22), transparent); filter: blur(10px); z-index: 0; }
+  .totem .tela { position: relative; z-index: 1; aspect-ratio: 9 / 16; max-width: 100%; border-radius: 22px; background: #000; border: 12px solid #0A0C1C; box-shadow: 0 40px 80px -30px rgba(0,0,0,.8), 0 0 0 1px rgba(255,255,255,.08); overflow: hidden; }
   .totem iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-  .totem .pe { width: 34%; height: 46px; margin: 0 auto; background: linear-gradient(#0A0C1C, #252A4D); clip-path: polygon(22% 0, 78% 0, 100% 100%, 0 100%); }
-  .totem .legenda { text-align: center; margin-top: 12px; }
+  .totem .pe { position: relative; z-index: 1; width: 34%; height: 46px; margin: 0 auto; background: linear-gradient(#0A0C1C, #252A4D); clip-path: polygon(22% 0, 78% 0, 100% 100%, 0 100%); }
+  .totem .legenda { position: relative; z-index: 1; text-align: center; margin-top: 12px; color: #B9BEE0; }
 
-  /* ---------- cardápio ---------- */
-  .faixa { background: var(--carpete); color: var(--carpete-tinta); padding-block: 72px; }
+  /* números */
+  .numeros { position: relative; border-top: 1px solid rgba(255,255,255,.1); }
+  .numeros .casca { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; padding-block: 26px; }
+  .numeros b { display: block; font: 800 40px/1 var(--fonte-display); font-variation-settings: "wdth" 80; color: var(--placa); }
+  .numeros span { font-size: 14px; color: #C9CDE8; }
+
+  /* ---------- seções ---------- */
+  .secao { padding-block: 80px; }
+  .faixa { background: var(--carpete); color: var(--carpete-tinta); padding-block: 80px; }
   .faixa .rotulo { color: #B9BEE0; }
-  .cab { display: flex; justify-content: space-between; align-items: end; gap: 24px; flex-wrap: wrap; margin-bottom: 36px; }
-  .cab h2 { font-size: clamp(34px, 5vw, 56px); font-weight: 800; font-variation-settings: "wdth" 80; line-height: 1; }
-  .cab p { max-width: 30em; margin: 0; color: #C9CDE8; }
+  .cab { display: flex; justify-content: space-between; align-items: end; gap: 24px; flex-wrap: wrap; margin-bottom: 40px; }
+  .cab h2 { font-size: clamp(34px, 5vw, 58px); font-weight: 800; font-variation-settings: "wdth" 80; line-height: 1; margin-top: 10px; }
+  .cab p { max-width: 30em; margin: 0; color: var(--tinta-suave); }
+  .faixa .cab p { color: var(--carpete-suave); }
+
+  /* soluções */
+  .solucoes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .sol { position: relative; background: var(--papel); border: 1px solid var(--linha); border-radius: 22px; padding: 26px; display: flex; flex-direction: column; gap: 12px; text-decoration: none; transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease; }
+  .sol:hover { transform: translateY(-4px); box-shadow: var(--sombra); border-color: var(--placa); }
+  .sol .ico { width: 54px; height: 54px; border-radius: 14px; background: var(--placa); color: var(--placa-tinta); display: grid; place-items: center; }
+  .sol .ico svg { width: 28px; height: 28px; }
+  .sol h3 { font-size: 24px; font-weight: 700; font-variation-settings: "wdth" 85; }
+  .sol p { margin: 0; color: var(--tinta-suave); font-size: 15.5px; flex: 1; }
+  .sol .ir { font: 600 13px/1 var(--fonte-mono); color: var(--tinta); }
+  .sol .ir::after { content: " →"; }
+  .sol .novo { position: absolute; top: 18px; right: 18px; font: 600 11px/1 var(--fonte-mono); letter-spacing: .08em; text-transform: uppercase; background: var(--carpete); color: #fff; padding: 6px 9px; border-radius: 99px; }
+
+  /* cardápio */
   .jogos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-  .jogo { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); border-radius: 20px; padding: 18px; display: flex; flex-direction: column; gap: 14px; }
+  .jogo { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); border-radius: 20px; padding: 18px; display: flex; flex-direction: column; gap: 14px; transition: transform .22s ease, border-color .22s ease, background .22s ease; }
+  .jogo:hover { transform: translateY(-4px); border-color: rgba(255,194,26,.6); background: rgba(255,255,255,.09); }
   .a-emo { font-size: 64px; line-height: 1; }
   .embreve { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0 0; padding: 0; list-style: none; }
   .embreve li { border: 1px solid rgba(255,255,255,.22); border-radius: 99px; padding: 8px 16px; font-size: 15px; color: #C9CDE8; }
+  .embreve li.novo { border-color: var(--placa); color: var(--placa); }
   .jogo .arte { height: 150px; border-radius: 14px; background: #121845; display: grid; place-items: center; overflow: hidden; position: relative; }
   .jogo h3 { font-size: 26px; font-weight: 700; font-variation-settings: "wdth" 85; }
   .jogo p { margin: 0; color: #C9CDE8; font-size: 15.5px; flex: 1; }
@@ -116,12 +162,36 @@
   @keyframes gira { to { transform: rotate(360deg); } }
   @keyframes cai { from { transform: translateY(-90px); } to { transform: translateY(110px); } }
 
+
+  /* ---------- avatar ---------- */
+  .avatar { display: grid; grid-template-columns: .9fr 1.1fr; gap: 48px; align-items: center; }
+  .avatar-cena { position: relative; aspect-ratio: 4 / 5; border-radius: 26px; overflow: hidden; background: radial-gradient(500px 300px at 50% 0%, #2A3380, var(--carpete-fundo) 70%); border: 1px solid rgba(255,255,255,.1); display: grid; place-items: center; color: #fff; }
+  .avatar-cena .rosto { width: 46%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #FFD866, var(--placa) 55%, #C48F00); box-shadow: 0 30px 60px -20px rgba(0,0,0,.8), 0 0 0 14px rgba(255,194,26,.12), 0 0 0 28px rgba(255,194,26,.06); animation: respira 4s ease-in-out infinite; }
+  .avatar-cena .rosto::before, .avatar-cena .rosto::after { content: ""; position: absolute; top: 42%; width: 9%; height: 13%; border-radius: 50%; background: #121631; animation: pisca 5s infinite; }
+  .avatar-cena .rosto::before { left: 30%; } .avatar-cena .rosto::after { right: 30%; }
+  .avatar-cena .rosto { position: relative; }
+  .avatar-cena .boca { position: absolute; top: 64%; left: 50%; width: 26%; height: 10%; transform: translateX(-50%); border-radius: 0 0 99px 99px; background: #121631; animation: fala 1.1s ease-in-out infinite; }
+  .avatar-cena .balao { position: absolute; left: 8%; right: 8%; bottom: 8%; background: #fff; color: #121631; border-radius: 18px 18px 18px 4px; padding: 14px 18px; font-size: 15.5px; box-shadow: 0 20px 40px -20px rgba(0,0,0,.8); }
+  .avatar-cena .balao b { display: block; font: 600 11px/1 var(--fonte-mono); letter-spacing: .1em; text-transform: uppercase; color: #4A5070; margin-bottom: 6px; }
+  .avatar-cena .onda { position: absolute; top: 9%; left: 50%; transform: translateX(-50%); display: flex; gap: 5px; align-items: end; height: 28px; }
+  .avatar-cena .onda i { width: 5px; border-radius: 3px; background: var(--placa); animation: onda 1s ease-in-out infinite; height: 30%; }
+  .avatar-cena .onda i:nth-child(2) { animation-delay: .15s; } .avatar-cena .onda i:nth-child(3) { animation-delay: .3s; } .avatar-cena .onda i:nth-child(4) { animation-delay: .45s; } .avatar-cena .onda i:nth-child(5) { animation-delay: .6s; }
+  @keyframes respira { 50% { transform: translateY(-6px); } }
+  @keyframes pisca { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(.1); } }
+  @keyframes fala { 50% { height: 4%; width: 20%; } }
+  @keyframes onda { 50% { height: 100%; } }
+  .modos { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 24px; }
+  .modo { background: var(--papel); border: 1px solid var(--linha); border-radius: 16px; padding: 18px; }
+  .modo h3 { font-size: 19px; margin-bottom: 6px; }
+  .modo p { margin: 0; color: var(--tinta-suave); font-size: 14.5px; }
+  .modo .tag { display: inline-block; font: 600 11px/1 var(--fonte-mono); letter-spacing: .08em; text-transform: uppercase; padding: 5px 8px; border-radius: 99px; background: var(--fundo); color: var(--tinta-suave); margin-bottom: 10px; }
+
   /* ---------- os totens ---------- */
   .aparelhos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
   .aparelho { background: var(--papel); border: 1px solid var(--linha); border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
   .aparelho .palco { height: 190px; display: grid; place-items: center; background: var(--fundo); border-radius: 12px; }
   .silhueta { background: #0A0C1C; border-radius: 8px; position: relative; display: grid; place-items: center; }
-  .silhueta::before { content: ""; position: absolute; inset: 7px; border-radius: 4px; background: linear-gradient(160deg, var(--carpete), #121845 60%, #0E1238); }
+  .silhueta::before { content: ""; position: absolute; inset: 7px; border-radius: 4px; background: linear-gradient(160deg, #1C2350, #121845 60%, #0E1238); }
   .silhueta::after { content: attr(data-res); position: relative; font: 600 11px/1 var(--fonte-mono); color: var(--placa); letter-spacing: .04em; }
   .silhueta.v { width: 78px; height: 150px; }
   .silhueta.h { width: 160px; height: 92px; }
@@ -131,7 +201,14 @@
   .aparelho h3 { font-size: 21px; font-weight: 700; font-variation-settings: "wdth" 88; }
   .aparelho p { margin: 0; color: var(--tinta-suave); font-size: 15px; flex: 1; }
   .aparelho .ideal { font: 400 12px/1.4 var(--fonte-mono); color: var(--tinta-suave); }
-  .totem-ficha { margin-top: 40px; display: grid; grid-template-columns: 1.1fr .9fr; gap: 28px; align-items: start; }
+  .parceria { margin-top: 24px; background: var(--carpete-fundo); color: #fff; border-radius: 22px; padding: 34px; display: grid; grid-template-columns: 1.2fr .8fr; gap: 28px; align-items: center; position: relative; overflow: hidden; }
+  .parceria::after { content: ""; position: absolute; right: -80px; top: -80px; width: 320px; height: 320px; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,194,26,.25), transparent); }
+  .parceria h3 { font-size: clamp(26px, 3.4vw, 38px); font-weight: 800; font-variation-settings: "wdth" 80; line-height: 1.05; }
+  .parceria p { color: #C9CDE8; margin: 12px 0 0; }
+  .parceria ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; position: relative; }
+  .parceria li { background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); border-radius: 12px; padding: 12px 14px; font-size: 15px; display: flex; gap: 10px; align-items: center; }
+  .parceria li::before { content: "✓"; width: 22px; height: 22px; border-radius: 6px; background: var(--placa); color: var(--placa-tinta); display: grid; place-items: center; font-weight: 800; font-size: 13px; flex: none; }
+  .totem-ficha { margin-top: 24px; display: grid; grid-template-columns: 1.1fr .9fr; gap: 18px; align-items: start; }
   .totem-ficha .bloco { background: var(--papel); border: 1px solid var(--linha); border-radius: 18px; padding: 24px; }
   .totem-ficha h3 { font-size: 22px; font-weight: 700; font-variation-settings: "wdth" 85; margin-bottom: 12px; }
   .totem-ficha ul { list-style: none; padding: 0; margin: 0; }
@@ -140,38 +217,43 @@
   .totem-ficha li::before { content: "✓"; position: absolute; left: 0; top: 9px; width: 20px; height: 20px; border-radius: 6px; background: var(--placa); color: var(--placa-tinta); display: grid; place-items: center; font-weight: 800; font-size: 12px; }
   .totem-ficha .perg li::before { content: "?"; background: var(--carpete); color: var(--carpete-tinta); }
   .totem-ficha b { color: var(--tinta); }
-  @media (max-width: 900px) { .aparelhos { grid-template-columns: 1fr 1fr; } .totem-ficha { grid-template-columns: 1fr; } }
-  @media (max-width: 560px) { .aparelhos { grid-template-columns: 1fr; } }
 
-  /* ---------- o que vem em todo jogo ---------- */
-  .secao { padding-block: 76px; }
+  /* ---------- sob medida ---------- */
+  .medida { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .medida .item { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); border-radius: 18px; padding: 22px; }
+  .medida h3 { font-size: 21px; margin-bottom: 8px; }
+  .medida p { margin: 0; color: #C9CDE8; font-size: 15px; }
+  .extras { margin-top: 30px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .extras div { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.12); border-radius: 14px; padding: 14px 16px; }
+  .extras b { display: block; font-size: 16px; margin-bottom: 4px; }
+  .extras span { font-size: 13.5px; color: #B9BEE0; }
+  .extras span.net { color: var(--placa); }
+
+  /* ---------- fichas, passos, relatório, lgpd ---------- */
   .ficha { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 2px solid var(--tinta); }
   .ficha div { padding: 22px 22px 26px 0; border-bottom: 1px solid var(--linha); }
   .ficha div:not(:nth-child(3n)) { padding-right: 28px; }
   .ficha h3 { font-size: 21px; font-weight: 700; font-variation-settings: "wdth" 90; margin-bottom: 6px; }
   .ficha p { margin: 0; color: var(--tinta-suave); font-size: 15.5px; }
-
-  /* ---------- como funciona (sequência real) ---------- */
   .passos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; counter-reset: p; list-style: none; padding: 0; margin: 0; }
   .passos li { background: var(--papel); border: 1px solid var(--linha); border-radius: 18px; padding: 22px; }
   .passos li::before { counter-increment: p; content: counter(p); display: grid; place-items: center; width: 40px; height: 40px; border-radius: 10px; background: var(--placa); color: var(--placa-tinta); font: 800 20px/1 var(--fonte-display); margin-bottom: 16px; }
   .passos h3 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
   .passos p { margin: 0; color: var(--tinta-suave); font-size: 15px; }
-
-  .contato { background: var(--placa); color: var(--placa-tinta); border-radius: 26px; padding: 40px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; }
-  .contato h2 { font-size: clamp(28px, 4vw, 44px); font-variation-settings: "wdth" 80; }
-  .contato .val { font: 600 18px var(--fonte-mono); user-select: all; }
-  .relatorio-quadro { border-radius: 20px; overflow: hidden; border: 1px solid var(--linha); background: #F4F5F7; }
+  .relatorio-quadro { border-radius: 20px; overflow: hidden; border: 1px solid var(--linha); background: #F4F5F7; box-shadow: var(--sombra); }
   .relatorio-quadro iframe { display: block; width: 100%; height: 620px; border: 0; }
   .lgpd { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 12px 28px; }
   .lgpd li { padding: 14px 0 14px 34px; border-bottom: 1px solid var(--linha); position: relative; color: var(--tinta-suave); }
   .lgpd li::before { content: "✓"; position: absolute; left: 0; top: 12px; width: 22px; height: 22px; border-radius: 6px; background: var(--placa); color: var(--placa-tinta); display: grid; place-items: center; font-weight: 800; font-size: 13px; }
   .lgpd b { color: var(--tinta); }
-  @media (max-width: 700px) { .lgpd { grid-template-columns: 1fr; } .relatorio-quadro iframe { height: 520px; } }
-  .contato-acoes { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 18px; }
+  .contato { background: var(--placa); color: var(--placa-tinta); border-radius: 26px; padding: 44px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; position: relative; overflow: hidden; }
+  .contato::after { content: "▶"; position: absolute; right: -10px; bottom: -40px; font: 800 220px/1 var(--fonte-display); color: rgba(18,22,49,.08); transform: rotate(-8deg); pointer-events: none; }
+  .contato h2 { font-size: clamp(28px, 4vw, 44px); font-variation-settings: "wdth" 80; }
+  .contato .val { font: 600 18px var(--fonte-mono); user-select: all; }
+  .contato-acoes { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 18px; position: relative; }
   .btn.escuro { background: var(--placa-tinta); color: var(--placa); }
   .btn.claro { background: transparent; color: var(--placa-tinta); box-shadow: inset 0 0 0 2px var(--placa-tinta); }
-  .rodape { padding-block: 34px 48px; color: var(--tinta-suave); font-size: 14px; }
+  .rodape { padding-block: 34px 48px; color: var(--tinta-suave); font-size: 14px; display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
 
   /* ---------- demo em tela cheia ---------- */
   .modal { position: fixed; inset: 0; z-index: 50; background: rgba(8,10,28,.86); display: flex; align-items: center; justify-content: center; padding: 20px; padding-top: calc(20px + env(safe-area-inset-top, 0px)); }
@@ -183,105 +265,194 @@
   @media (max-width: 560px) { .btn.claro-m { display: none; } }
   .modal .nota { position: absolute; bottom: 14px; left: 0; right: 0; text-align: center; color: #C9CDE8; font: 400 12px var(--fonte-mono); padding-inline: 16px; }
 
+  /* aparecer ao rolar */
+  .rev { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+  .rev.ok { opacity: 1; transform: none; }
+
   @media (max-width: 900px) {
-    .hero { grid-template-columns: 1fr; gap: 40px; }
-    .jogos { grid-template-columns: 1fr 1fr; }
+    .hero { grid-template-columns: 1fr; gap: 40px; padding-block: 48px 60px; }
+    .numeros .casca { grid-template-columns: 1fr 1fr; }
+    .solucoes, .jogos, .medida { grid-template-columns: 1fr 1fr; }
     .ficha { grid-template-columns: 1fr 1fr; }
     .ficha div:not(:nth-child(3n)) { padding-right: 0; }
     .ficha div:nth-child(odd) { padding-right: 22px; }
-    .passos { grid-template-columns: 1fr 1fr; }
+    .passos, .aparelhos, .extras { grid-template-columns: 1fr 1fr; }
+    .avatar, .totem-ficha, .parceria { grid-template-columns: 1fr; }
   }
   @media (max-width: 560px) {
-    .jogos, .ficha, .passos { grid-template-columns: 1fr; }
+    .solucoes, .jogos, .ficha, .passos, .aparelhos, .medida, .extras, .modos, .lgpd { grid-template-columns: 1fr; }
     .ficha div:nth-child(odd) { padding-right: 0; }
     .contato { padding: 28px; }
+    .parceria { padding: 24px; }
+    .relatorio-quadro iframe { height: 520px; }
+    .secao, .faixa { padding-block: 60px; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .a-rol, .a-rfx span { animation: none; }
+    .a-rol, .a-rfx span, .bolhas span, .avatar-cena .rosto, .avatar-cena .boca, .avatar-cena .onda i { animation: none; }
+    .rev { opacity: 1; transform: none; transition: none; }
+    html { scroll-behavior: auto; }
   }
 </style>
 </head>
 <body>
 
-<div class="casca">
-  <header class="barra">
-    <div class="marca"><i>▶</i>Stand Play</div>
-    <span class="rotulo">Jogos de estande para locadoras</span>
-  </header>
+<header class="barra">
+  <div class="casca">
+    <a class="marca" href="#"><i>▶</i>Stand Play</a>
+    <ul class="menu">
+      <li><a href="#solucoes">Soluções</a></li>
+      <li><a href="#cardapio">Jogos</a></li>
+      <li><a href="#avatar">Avatar com IA</a></li>
+      <li><a href="#totens">Totens</a></li>
+      <li><a href="#medida">Sob medida</a></li>
+      <li><a href="#como">Como funciona</a></li>
+    </ul>
+    <a class="btn p" href="#contato">Falar com a gente</a>
+  </div>
+</header>
 
-  <section class="hero">
-    <div>
-      <p class="rotulo">Para locadoras de totem</p>
-      <h1>O jogo pronto para o seu totem, com a <mark>marca do seu cliente</mark>.</h1>
-      <p class="lede">Você aluga a tela. A Stand Play entrega o jogo com a marca do expositor, o cadastro com a LGPD resolvida e o relatório do evento. Você revende com o seu nome: a Stand Play não aparece para o seu cliente.</p>
-      <div class="acoes">
-        <a class="btn p" href="#cardapio">Ver os jogos</a>
-        <a class="btn s" href="#produtos">Além do jogo</a>
-        <a class="btn s" href="#totens">Os totens</a>
-        <a class="btn s" href="#relatorio">Ver um relatório de exemplo</a>
-        <a class="btn s" href="#contato">Falar com a gente</a>
+<div class="heroi">
+  <div class="bolhas" aria-hidden="true">
+    <span style="--x:6%;--d:90px;--t:14s;--a:-2s"></span>
+    <span style="--x:18%;--d:46px;--t:11s;--a:-7s"></span>
+    <span style="--x:31%;--d:120px;--t:18s;--a:-9s"></span>
+    <span style="--x:47%;--d:60px;--t:12s;--a:-4s"></span>
+    <span style="--x:58%;--d:36px;--t:9s;--a:-1s"></span>
+    <span style="--x:71%;--d:140px;--t:20s;--a:-12s"></span>
+    <span style="--x:86%;--d:70px;--t:13s;--a:-6s"></span>
+    <span style="--x:94%;--d:40px;--t:10s;--a:-3s"></span>
+  </div>
+  <div class="casca">
+    <section class="hero">
+      <div>
+        <p class="rotulo">Jogos e experiências interativas para estandes</p>
+        <h1>O estande que todo mundo <mark>para pra jogar</mark>.</h1>
+        <p class="lede">Jogo com a marca do expositor, cadastro com a LGPD resolvida, avatar com IA, totens e telas, e projeto sob medida. Para expositores, agências e locadoras de totem. Tudo roda sem internet e termina com o relatório do evento.</p>
+        <div class="acoes">
+          <a class="btn p" href="#cardapio">Jogar uma demo</a>
+          <a class="btn s claro" href="#solucoes">Ver as soluções</a>
+        </div>
+        <ul class="fatos">
+          <li>Marca só do expositor</li>
+          <li>Funciona sem internet</li>
+          <li>LGPD com prova do aceite</li>
+          <li>Relatório do evento</li>
+        </ul>
       </div>
-      <ul class="fatos">
-        <li>Sem a nossa marca no jogo</li>
-        <li>Funciona sem internet</li>
-        <li>LGPD com prova do aceite</li>
-        <li>Relatório do evento</li>
-      </ul>
+      <div class="totem">
+        <div class="tela"><iframe id="demoTotem" title="Demonstração do quiz num totem" loading="lazy"></iframe></div>
+        <div class="pe"></div>
+        <p class="rotulo legenda">Demo ao vivo · toque para jogar</p>
+      </div>
+    </section>
+  </div>
+  <div class="numeros">
+    <div class="casca">
+      <div><b>6</b><span>jogos prontos no cardápio</span></div>
+      <div><b>15</b><span>jogos novos em teste no totem</span></div>
+      <div><b>1 min</b><span>por partida, pensado para fila de estande</span></div>
+      <div><b>0</b><span>internet necessária no pavilhão</span></div>
     </div>
-    <div class="totem">
-      <div class="tela"><iframe id="demoTotem" title="Demonstração do quiz num totem" loading="lazy"></iframe></div>
-      <div class="pe"></div>
-      <p class="rotulo legenda">Demo ao vivo · toque para jogar</p>
+  </div>
+</div>
+
+<div class="casca">
+  <section class="secao" id="solucoes">
+    <div class="cab rev">
+      <div>
+        <p class="rotulo">Soluções</p>
+        <h2>Seis jeitos de fazer o visitante parar</h2>
+      </div>
+      <p>Do jogo de um minuto à sala imersiva. Tudo sai com a marca do expositor, o cadastro com LGPD e o relatório do evento.</p>
+    </div>
+    <div class="solucoes">
+      <a class="sol rev" href="#cardapio">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="4"/><path d="M8 10v4M6 12h4M15 11h.01M18 13h.01"/></svg></div>
+        <h3>Jogos de estande</h3>
+        <p>Quiz, memória, roleta, raspadinha, reflexo e caça-palavras, com o conteúdo e as cores do expositor. Dá para encadear dois: vence o quiz, ganha um giro.</p>
+        <span class="ir">Jogar as demos</span>
+      </a>
+      <a class="sol rev" href="#produtos">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h5"/><path d="M15 16l2 2 4-4"/></svg></div>
+        <h3>Cadastro, pesquisa e sorteio</h3>
+        <p>Para quem só quer o contato: cadastro em 30 segundos, pesquisa de satisfação com NPS e sorteio no telão com a marca do cliente.</p>
+        <span class="ir">Ver os produtos</span>
+      </a>
+      <a class="sol rev" href="#avatar">
+        <span class="novo">Novo</span>
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/><path d="M19 3l1 2 2 1-2 1-1 2-1-2-2-1 2-1z"/></svg></div>
+        <h3>Avatar com IA</h3>
+        <p>Um apresentador digital da marca, em 3D, que recebe o visitante, apresenta o produto e responde perguntas com o que o expositor aprovou.</p>
+        <span class="ir">Como funciona</span>
+      </a>
+      <a class="sol rev" href="#totens">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="17" rx="2"/><path d="M9 22h6M12 19v3"/></svg></div>
+        <h3>Totens e telas</h3>
+        <p>O jogo entra no totem que você tem. Não tem? Temos empresa parceira que aluga totem, TV e telão com entrega, montagem e suporte no evento.</p>
+        <span class="ir">Ver os formatos</span>
+      </a>
+      <a class="sol rev" href="#medida">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 6 6 1-4.5 4 1 6-5.5-3-5.5 3 1-6L3 9l6-1z"/></svg></div>
+        <h3>Projeto sob medida</h3>
+        <p>Mecânica própria, jogo coletivo no telão, catálogo e mapa interativos, sala imersiva com paredes de LED. Para lançamento e ativação de marca.</p>
+        <span class="ir">O que dá para fazer</span>
+      </a>
+      <a class="sol rev" href="#relatorio">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></div>
+        <h3>Relatório e LGPD</h3>
+        <p>Pessoas por hora, cadastros, aceites e brindes, sem marca de fornecedor. E a prova de que cada cadastro pode ser usado.</p>
+        <span class="ir">Ver um relatório</span>
+      </a>
     </div>
   </section>
 </div>
 
 <section class="faixa" id="cardapio">
   <div class="casca">
-    <div class="cab">
+    <div class="cab rev">
       <div>
         <p class="rotulo">O cardápio</p>
         <h2>Seis jogos, um minuto cada</h2>
       </div>
-      <p>Cada um ganha as cores, o logo e o conteúdo do expositor. Dá para encadear dois: o visitante vence o quiz e ganha um giro na roleta. As demos abaixo usam a Zion Farm como cliente de exemplo.</p>
+      <p>Cada um ganha as cores, o logo e o conteúdo do expositor. As demos abaixo usam a Zion Farm como cliente de exemplo.</p>
     </div>
     <div class="jogos">
-      <article class="jogo">
+      <article class="jogo rev">
         <div class="arte"><div class="a-quiz"><span><b>A</b>2016</span><span class="ok"><b>B</b>2020</span><span><b>C</b>2018</span><span><b>D</b>2023</span></div></div>
         <h3>Quiz</h3>
         <p>Perguntas com tempo e explicação depois de cada resposta. Pode vir com um texto curto antes, de onde saem as perguntas.</p>
         <span class="ideal">Ideal para: ensinar sobre o produto</span>
         <div class="acoes-jogo"><button class="btn p" type="button" data-demo="quiz">Jogar</button><a class="tc" href="demos/quiz.html" target="_blank" rel="noopener">Tela cheia ↗</a></div>
       </article>
-      <article class="jogo">
+      <article class="jogo rev">
         <div class="arte"><div class="a-mem"><span></span><span class="v">🌱</span><span></span><span></span><span></span><span></span><span class="v">🌸</span><span></span></div></div>
         <h3>Memória</h3>
         <p>Pares iguais ou "associar": ligar o produto à função, a etapa ao prazo. Esta demo termina com a roleta de brindes.</p>
         <span class="ideal">Ideal para: fixar termos da marca</span>
         <div class="acoes-jogo"><button class="btn p" type="button" data-demo="memoria">Jogar</button><a class="tc" href="demos/memoria.html" target="_blank" rel="noopener">Tela cheia ↗</a></div>
       </article>
-      <article class="jogo">
+      <article class="jogo rev">
         <div class="arte"><div class="a-rol-seta"></div><div class="a-rol"></div></div>
         <h3>Roleta</h3>
         <p>Cadastro e giro. A chance de cada brinde é sua, e brinde que acabou nunca é sorteado.</p>
         <span class="ideal">Ideal para: fila rápida e muito movimento</span>
         <div class="acoes-jogo"><button class="btn p" type="button" data-demo="roleta">Jogar</button><a class="tc" href="demos/roleta.html" target="_blank" rel="noopener">Tela cheia ↗</a></div>
       </article>
-      <article class="jogo">
+      <article class="jogo rev">
         <div class="arte"><div class="a-rsp"></div></div>
         <h3>Raspadinha</h3>
         <p>O visitante raspa com o dedo e descobre o prêmio. Mesma regra de estoque e chance da roleta.</p>
         <span class="ideal">Ideal para: sorteio com suspense</span>
         <div class="acoes-jogo"><button class="btn p" type="button" data-demo="raspadinha">Jogar</button><a class="tc" href="demos/raspadinha.html" target="_blank" rel="noopener">Tela cheia ↗</a></div>
       </article>
-      <article class="jogo">
+      <article class="jogo rev">
         <div class="arte a-rfx"><span style="left:22%">🕷️</span><span style="left:48%;animation-delay:-1.1s">🌿</span><span style="left:72%;animation-delay:-2.2s">🪰</span></div>
         <h3>Reflexo</h3>
         <p>Itens caem e o visitante toca nos certos e foge dos errados, contra o relógio. Ranking do dia na tela de espera.</p>
         <span class="ideal">Ideal para: competição e plateia em volta</span>
         <div class="acoes-jogo"><button class="btn p" type="button" data-demo="reflexo">Jogar</button><a class="tc" href="demos/reflexo.html" target="_blank" rel="noopener">Tela cheia ↗</a></div>
       </article>
-      <article class="jogo">
+      <article class="jogo rev">
         <div class="arte"><div class="a-cp" aria-hidden="true"></div></div>
         <h3>Caça-palavras</h3>
         <p>As palavras da sua marca escondidas numa grade que muda a cada partida. Arrasta o dedo e acha.</p>
@@ -289,76 +460,118 @@
         <div class="acoes-jogo"><button class="btn p" type="button" data-demo="caca">Jogar</button><a class="tc" href="demos/caca.html" target="_blank" rel="noopener">Tela cheia ↗</a></div>
       </article>
     </div>
+
   </div>
 </section>
 
-<section class="faixa" id="produtos">
+<section class="faixa" id="produtos" style="padding-top:0">
   <div class="casca">
-    <div class="cab">
+    <div class="cab rev">
       <div>
         <p class="rotulo">Além do jogo</p>
-        <h2>O mesmo totem, mais três coisas para vender</h2>
+        <h2>O mesmo totem, mais três coisas</h2>
       </div>
       <p>Nem todo expositor quer jogo. Estes usam o mesmo cadastro com LGPD, o mesmo painel do operador e o mesmo relatório do evento.</p>
     </div>
     <div class="jogos">
-      <article class="jogo">
+      <article class="jogo rev">
         <div class="arte"><span class="a-emo">🎟️</span></div>
         <h3>Cadastro e sorteio no telão</h3>
         <p>Para o expositor que só quer o contato: o visitante se cadastra em 30 segundos e concorre. Na hora do sorteio, o operador abre o painel e os nomes giram na TV do estande, com a marca do cliente.</p>
         <span class="ideal">Ideal para: juntar gente no estande num horário marcado</span>
         <div class="acoes-jogo"><button class="btn p" type="button" data-demo="cadastro">Ver</button><a class="tc" href="demos/cadastro.html" target="_blank" rel="noopener">Tela cheia ↗</a></div>
       </article>
-      <article class="jogo">
+      <article class="jogo rev">
         <div class="arte"><span class="a-emo">💬</span></div>
         <h3>Pesquisa de satisfação</h3>
         <p>Até quatro perguntas de um toque: nota de 0 a 10 (NPS), carinhas de 1 a 5 ou múltipla escolha. Pode ser anônima. O relatório sai com o NPS calculado e cada resposta na planilha.</p>
         <span class="ideal">Ideal para: medir o estande, o lançamento ou o atendimento</span>
         <div class="acoes-jogo"><button class="btn p" type="button" data-demo="pesquisa">Ver</button><a class="tc" href="demos/pesquisa.html" target="_blank" rel="noopener">Tela cheia ↗</a></div>
       </article>
-      <article class="jogo">
+      <article class="jogo rev">
         <div class="arte"><span class="a-emo">🏆</span></div>
         <h3>Convenção de vendas</h3>
         <p>Os mesmos jogos para a equipe interna da empresa: quiz sobre o produto novo e a política comercial, com ranking do dia na tela. Para o cliente da locadora que faz convenção e treinamento, não só feira.</p>
         <span class="ideal">Ideal para: treinar a equipe com competição</span>
       </article>
     </div>
+
     <p class="rotulo" style="margin-top:28px">Em teste no totem, chegando ao cardápio</p>
     <ul class="embreve">
-      <li>Monte o produto</li><li>Coloque na ordem</li><li>Certo ou errado</li><li>Palavra embaralhada</li><li>Forca</li><li>Pega-produto</li><li>Toupeira</li><li>Gênius</li><li>Caça-níquel</li><li>Encontre as diferenças</li><li>Plinko</li><li>Pênalti</li><li>Combine 3</li><li>Crie o seu</li>
+      <li class="novo">Estoure as bolhas</li><li>Monte o produto</li><li>Coloque na ordem</li><li>Certo ou errado</li><li>Palavra embaralhada</li><li>Forca</li><li>Pega-produto</li><li>Toupeira</li><li>Gênius</li><li>Caça-níquel</li><li>Encontre as diferenças</li><li>Plinko</li><li>Pênalti</li><li>Combine 3</li><li>Crie o seu</li>
     </ul>
   </div>
 </section>
 
 <div class="casca">
-  <section class="secao" id="totens">
-    <div class="cab">
+  <section class="secao" id="avatar">
+    <div class="cab rev">
       <div>
-        <p class="rotulo">Os totens</p>
+        <p class="rotulo">Avatar com IA</p>
+        <h2>Um apresentador digital que fala pela marca</h2>
+      </div>
+      <p>No totem ou numa sala imersiva: um personagem 3D com a cara do expositor recebe o visitante, apresenta o produto e responde perguntas. Ele só diz o que o expositor aprovou.</p>
+    </div>
+    <div class="avatar">
+      <div class="avatar-cena rev" aria-hidden="true">
+        <div class="onda"><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="rosto"><div class="boca"></div></div>
+        <div class="balao"><b>Visitante pergunta</b>"Qual a diferença entre os dois modelos?"</div>
+      </div>
+      <div class="rev">
+        <p style="margin:0 0 6px;color:var(--tinta-suave)">O avatar nasce do manual de marca do expositor, com a voz escolhida por ele, e fala a partir de um roteiro aprovado. Funciona de dois jeitos, que podem andar juntos:</p>
+        <div class="modos">
+          <div class="modo">
+            <span class="tag">Sem internet</span>
+            <h3>Respostas aprovadas</h3>
+            <p>O visitante escolhe o assunto na tela e o avatar responde com falas gravadas a partir do roteiro do expositor. Nada é inventado, nada depende do Wi-Fi do pavilhão.</p>
+          </div>
+          <div class="modo">
+            <span class="tag">Com internet</span>
+            <h3>Conversa por voz</h3>
+            <p>O visitante pergunta falando e o avatar responde na hora, dentro dos limites que o expositor definiu: preço, prazo e promessa só saem se estiverem no material aprovado.</p>
+          </div>
+        </div>
+        <ul class="fatos" style="margin-top:22px">
+          <li style="color:var(--tinta-suave)">Cadastro e brinde no mesmo fluxo</li>
+          <li style="color:var(--tinta-suave)">Totem, TV ou paredes de LED</li>
+          <li style="color:var(--tinta-suave)">Relatório do que foi perguntado</li>
+        </ul>
+        <div class="acoes" style="margin-top:24px"><a class="btn p" href="#contato">Quero um avatar para o meu estande</a></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="casca">
+  <section class="secao" id="totens" style="padding-top:0">
+    <div class="cab rev">
+      <div>
+        <p class="rotulo">Totens e telas</p>
         <h2>Em que aparelho o jogo roda</h2>
       </div>
-      <p>A Stand Play não aluga totem: o jogo entra no totem que você já tem. É feito para o totem vertical de 43 polegadas, o mais comum nas locadoras, e o mesmo arquivo se ajusta sozinho à tela deitada, à TV do estande e ao celular.</p>
+      <p>O jogo entra no totem que você já tem, e o mesmo arquivo se ajusta sozinho à tela deitada, à TV do estande e ao celular. Não tem totem? Veja a parceria logo abaixo.</p>
     </div>
     <div class="aparelhos">
-      <article class="aparelho">
+      <article class="aparelho rev">
         <div class="palco"><div><div class="silhueta v" data-res="1080×1920"></div><div class="pe-v"></div></div></div>
         <h3>Totem em pé, 43"</h3>
         <p>O palco principal: tela Full HD em pé, toque de dedo, caixas de som do próprio totem. O jogo instala como app Android e abre em tela cheia, sem barra do sistema.</p>
         <span class="ideal">Android 7 ou mais novo · 32" a 55"</span>
       </article>
-      <article class="aparelho">
+      <article class="aparelho rev">
         <div class="palco"><div class="silhueta h" data-res="1920×1080"></div></div>
         <h3>Totem deitado ou TV touch</h3>
         <p>O mesmo jogo, com o layout reorganizado para a tela larga: mesa touch, totem horizontal de 43" ou 55", TV com moldura de toque.</p>
         <span class="ideal">Sem versão separada: um arquivo, dois formatos</span>
       </article>
-      <article class="aparelho">
+      <article class="aparelho rev">
         <div class="palco"><div class="silhueta tv" data-res="TELÃO"></div></div>
         <h3>A TV ou o telão do estande</h3>
         <p>Para o sorteio no telão e o ranking do dia: o operador abre o painel e a tela grande mostra os nomes girando com a marca do expositor.</p>
         <span class="ideal">Qualquer TV com entrada HDMI ou navegador</span>
       </article>
-      <article class="aparelho">
+      <article class="aparelho rev">
         <div class="palco"><div class="silhueta cel" data-res="PRÉVIA"></div></div>
         <h3>Celular e tablet</h3>
         <p>Antes de ir para o totem, o expositor joga a prévia no próprio celular pelo link. É nela que ele aprova pergunta, brinde e texto.</p>
@@ -366,8 +579,23 @@
       </article>
     </div>
 
+    <div class="parceria rev">
+      <div>
+        <p class="rotulo" style="color:var(--placa)">Não tem totem?</p>
+        <h3>A gente cuida do aparelho também</h3>
+        <p>Temos uma empresa parceira especializada em locação para eventos. Você fecha com a Stand Play e recebe o totem com o jogo já instalado e testado: um contato só, do orçamento à retirada no fim da feira.</p>
+      </div>
+      <ul>
+        <li>Totem touch em pé ou deitado, 43" e 55"</li>
+        <li>TV e telão para o sorteio e o ranking</li>
+        <li>Adesivagem com a marca do expositor</li>
+        <li>Entrega, montagem, teste no local e retirada</li>
+        <li>Suporte técnico durante o evento</li>
+      </ul>
+    </div>
+
     <div class="totem-ficha">
-      <div class="bloco">
+      <div class="bloco rev">
         <h3>O que entregamos para o seu totem</h3>
         <ul>
           <li><b>App Android (APK)</b> que instala por pen drive, Bluetooth ou pelo software de gestão do totem, e também o mesmo jogo em link para navegador.</li>
@@ -375,11 +603,11 @@
           <li><b>Atualizar sem perder nada</b>: a nova versão instala por cima e os cadastros do dia continuam lá.</li>
           <li><b>Toque pensado para dedo</b>: botões de pelo menos 52 px, teclado próprio na tela (o do Android cobriria o jogo).</li>
           <li><b>Vídeo de espera leve</b>, para o totem não engasgar: o tamanho é conferido antes de sair.</li>
-          <li><b>Teste no seu aparelho antes do evento</b>, com a lista do que olhar em uma página.</li>
+          <li><b>Teste no aparelho antes do evento</b>, com a lista do que olhar em uma página.</li>
         </ul>
       </div>
-      <div class="bloco">
-        <h3>O que precisamos saber do seu totem</h3>
+      <div class="bloco rev">
+        <h3>Se o totem é seu, precisamos saber</h3>
         <ul class="perg">
           <li><b>Tamanho e posição</b> da tela: 43" em pé, 55" deitado, mesa.</li>
           <li><b>Sistema</b>: Android (qual versão) ou Windows com navegador.</li>
@@ -387,97 +615,110 @@
           <li><b>Som</b>: tem caixas? O jogo tem som, mas funciona mudo.</li>
           <li><b>Quem opera</b> no evento: é quem recebe a senha do painel.</li>
         </ul>
-        <p style="margin:16px 0 0;color:var(--tinta-suave);font-size:14.5px">Formatos maiores, como parede de LED ou sala imersiva com avatar, são projeto sob medida: fale com a gente.</p>
       </div>
     </div>
   </section>
 </div>
 
-<div class="casca">
-  <section class="secao">
-    <div class="cab">
+<section class="faixa" id="medida">
+  <div class="casca">
+    <div class="cab rev">
       <div>
-        <p class="rotulo">Para a sua locadora</p>
-        <h2>O que você ganha revendendo</h2>
+        <p class="rotulo">Projeto sob medida</p>
+        <h2>Quando o estande pede uma ideia só dele</h2>
       </div>
-      <p>Um cardápio de jogos sem montar equipe de desenvolvimento, e três coisas que o expositor cobra e quase ninguém entrega.</p>
+      <p>Lançamento, ativação de marca, convenção com centenas de pessoas: construímos a mecânica do zero, em cima do mesmo motor que já faz cadastro, brinde e relatório.</p>
     </div>
-    <div class="ficha">
-      <div><h3>A sua marca, não a nossa</h3><p>O jogo mostra só a marca do expositor. Nos grupos com o cliente, a Stand Play entra como parte da sua equipe.</p></div>
-      <div><h3>Relatório do evento</h3><p>No fim de cada dia, o operador exporta o relatório: pessoas por hora, cadastros, aceites, brindes entregues.</p></div>
-      <div><h3>LGPD resolvida</h3><p>Aceites separados, prova de data e hora em cada cadastro, menor de idade sem dado guardado.</p></div>
-      <div><h3>Sem internet</h3><p>O jogo roda inteiro no totem. Pavilhão sem sinal não para o estande.</p></div>
-      <div><h3>Brindes sob controle</h3><p>Estoque e chance de cada brinde ajustáveis durante o evento. Brinde que acabou nunca é sorteado.</p></div>
-      <div><h3>Painel do operador</h3><p>Com senha, escondido do visitante: estoque, tempo do jogo, sorteio do dia, planilha e relatório.</p></div>
+    <div class="medida">
+      <div class="item rev"><h3>Jogo com a mecânica da marca</h3><p>O produto vira o jogo: montar, ordenar, combinar, escolher. A regra sai do briefing do expositor, não de um catálogo.</p></div>
+      <div class="item rev"><h3>Jogo coletivo no telão</h3><p>A plateia joga junto e vê o placar na tela grande: ranking ao vivo, duelo entre times, meta do dia subindo em tempo real.</p></div>
+      <div class="item rev"><h3>Sala imersiva com avatar</h3><p>Três paredes de LED, um púlpito touch e o avatar da marca apresentando. Para shopping, feira e evento de lançamento.</p></div>
     </div>
-  </section>
+    <p class="rotulo" style="margin-top:34px">Também fazemos, no mesmo motor</p>
+    <div class="extras">
+      <div class="rev"><b>Catálogo interativo</b><span>Produtos, fichas e vídeos na tela, com pedido de contato no fim.</span></div>
+      <div class="rev"><b>Mapa do estande ou do evento</b><span>Onde fica cada coisa, com busca por toque.</span></div>
+      <div class="rev"><b>Check-in com QR</b><span>Credenciamento e lista de presença, sem fila no balcão.</span></div>
+      <div class="rev"><b>Enquete ao vivo</b><span>O público vota pelo celular e o resultado aparece no telão. <span class="net">Precisa de internet.</span></span></div>
+      <div class="rev"><b>Treinamento gamificado</b><span>Convenção de vendas e integração de equipe, com ranking por turma.</span></div>
+      <div class="rev"><b>Certificado por QR</b><span>Quem completa o treinamento ou a visita leva o certificado no celular.</span></div>
+      <div class="rev"><b>Caça ao tesouro entre estandes</b><span>Missões por QR em vários pontos, pontos somados num só cadastro.</span></div>
+      <div class="rev"><b>Mural de recados e fotos</b><span>Depoimento do visitante na tela do estande, moderado pelo operador.</span></div>
+    </div>
+    <div class="acoes rev" style="margin-top:32px"><a class="btn p" href="#contato">Contar a ideia para a gente</a></div>
+  </div>
+</section>
 
-  <section class="secao" id="relatorio" style="padding-top:0">
-    <div class="cab">
+<div class="casca">
+  <section class="secao" id="relatorio">
+    <div class="cab rev">
       <div>
         <p class="rotulo">Relatório do evento</p>
         <h2>O número que o expositor leva para o chefe</h2>
       </div>
-      <p>Quase nenhuma locadora mostra o resultado do jogo. Este é o relatório que o operador exporta no fim do dia, sem marca de fornecedor.</p>
+      <p>Quase ninguém mostra o resultado do jogo. Este é o relatório que o operador exporta no fim do dia, sem marca de fornecedor.</p>
     </div>
-    <div class="relatorio-quadro">
+    <div class="relatorio-quadro rev">
       <iframe src="exemplo/relatorio.html" title="Relatório de exemplo" loading="lazy"></iframe>
     </div>
     <p class="rotulo" style="margin-top:12px">Exemplo gerado pela demo com partidas simuladas · <a href="exemplo/relatorio.html" target="_blank" rel="noopener">abrir inteiro</a></p>
   </section>
 
   <section class="secao" style="padding-top:0">
-    <div class="cab">
+    <div class="cab rev">
       <div>
         <p class="rotulo">LGPD</p>
         <h2>O cadastro sai com a prova de que pode ser usado</h2>
       </div>
-      <p>No estande, quem decide o uso do cadastro é o expositor, e a locadora opera o jogo em nome dele. O jogo já faz a parte dele nessa cadeia.</p>
+      <p>No estande, quem decide o uso do cadastro é o expositor. O jogo já faz a parte dele nessa cadeia.</p>
     </div>
-    <ul class="lgpd">
+    <ul class="lgpd rev">
       <li><b>Aceite de participação</b> obrigatório, com o link da política de privacidade do expositor.</li>
       <li><b>Aceite de novidades</b> separado e opcional, sem caixa pré-marcada.</li>
       <li><b>Compartilhamento</b> com agência ou parceiro só com aceite próprio, dizendo com quem e para quê.</li>
       <li><b>Prova do aceite:</b> cada linha da planilha traz data, hora e a versão do texto aceito.</li>
       <li><b>Menor de idade</b> joga sem nenhum dado guardado, ou não joga, conforme o expositor escolher.</li>
       <li><b>Os dados ficam no totem</b>, sem envio pela internet, e são apagados no fim do evento.</li>
-      <li><b>Cláusulas prontas</b> para o seu contrato com o expositor, para o seu jurídico revisar.</li>
+      <li><b>Cláusulas prontas</b> para o contrato com o expositor, para o jurídico revisar.</li>
     </ul>
   </section>
 
-  <section class="secao" style="padding-top:0">
-    <div class="cab">
+  <section class="secao" id="como" style="padding-top:0">
+    <div class="cab rev">
       <div>
         <p class="rotulo">Como funciona</p>
-        <h2>Do seu contrato ao estande</h2>
+        <h2>Do briefing ao estande</h2>
       </div>
     </div>
     <ol class="passos">
-      <li><h3>Você fecha com o expositor</h3><p>E abre o grupo com ele. A Stand Play entra como parte da sua equipe e pede marca, brindes e conteúdo numa mensagem só.</p></li>
-      <li><h3>Prévia no celular</h3><p>O expositor joga o próprio jogo pelo celular antes de qualquer coisa ir para o evento.</p></li>
-      <li><h3>Aprovação</h3><p>Cada pergunta, resposta, brinde e texto de privacidade é conferido item por item com o expositor.</p></li>
-      <li><h3>No evento</h3><p>App testado no seu totem, guia de uma página para o operador e relatório no fim de cada dia.</p></li>
+      <li class="rev"><h3>Briefing numa mensagem</h3><p>Objetivo, marca, brindes e conteúdo com fonte. Abrimos um grupo e pedimos tudo de uma vez.</p></li>
+      <li class="rev"><h3>Prévia no celular</h3><p>O expositor joga o próprio jogo pelo celular antes de qualquer coisa ir para o evento.</p></li>
+      <li class="rev"><h3>Aprovação item por item</h3><p>Cada pergunta, resposta, brinde e texto de privacidade é conferido com o expositor.</p></li>
+      <li class="rev"><h3>No evento</h3><p>App testado no totem, guia de uma página para o operador e relatório no fim de cada dia.</p></li>
     </ol>
   </section>
 
   <section class="secao" style="padding-top:0">
-    <div class="cab">
+    <div class="cab rev">
       <div>
-        <p class="rotulo">Como a locadora compra</p>
-        <h2>Três jeitos de ter o cardápio</h2>
+        <p class="rotulo">Para locadoras e agências</p>
+        <h2>Revenda com a sua marca</h2>
       </div>
-      <p>Você define o preço para o seu cliente. Os valores de cada formato são combinados com a sua locadora.</p>
+      <p>Um cardápio inteiro sem montar equipe de desenvolvimento. A Stand Play não aparece para o seu cliente: nos grupos, entramos como parte da sua equipe.</p>
     </div>
-    <div class="ficha">
+    <div class="ficha rev">
       <div><h3>Por evento</h3><p>Um jogo personalizado para cada contrato que você fechar. Bom para começar.</p></div>
       <div><h3>Pacote mensal</h3><p>Um valor fixo por mês com um número de jogos personalizados incluídos. Você revende cada um pelo preço que quiser.</p></div>
       <div><h3>Licença por totem</h3><p>O cardápio inteiro instalado nos seus totens durante o ano, com a personalização de cada evento incluída.</p></div>
+      <div><h3>Brindes sob controle</h3><p>Estoque e chance de cada brinde ajustáveis durante o evento. Brinde que acabou nunca é sorteado.</p></div>
+      <div><h3>Painel do operador</h3><p>Com senha, escondido do visitante: estoque, tempo do jogo, sorteio do dia, planilha e relatório.</p></div>
+      <div><h3>Prazo em dias</h3><p>O relógio começa quando o material está completo, e a data da prévia e do app vai no contrato.</p></div>
     </div>
   </section>
 
   <section class="secao" id="contato" hidden style="padding-top:0">
-    <div class="contato">
-      <h2>Quer o cardápio no seu totem?</h2>
+    <div class="contato rev">
+      <h2>Quer isso no seu estande?</h2>
       <div class="contato-acoes">
         <div><p class="rotulo" style="color:inherit;opacity:.7;margin:0 0 6px">WhatsApp</p><div class="val" id="contatoValor"></div></div>
         <a class="btn escuro" id="contatoZap" href="#" target="_blank" rel="noopener">Chamar no WhatsApp</a>
@@ -487,7 +728,8 @@
   </section>
 
   <footer class="rodape">
-    © 2026 Stand Play · jogos de estande para locadoras de totem · (11) 95333-4212. As demos usam a Zion Farm como exemplo de cliente, e os brindes delas são fictícios. O que você digitar numa demo fica só no seu navegador.
+    <span>© 2026 Stand Play · jogos e experiências interativas para estandes · (11) 95333-4212</span>
+    <span>As demos usam a Zion Farm como exemplo de cliente, com brindes fictícios. O que você digitar numa demo fica só no seu navegador.</span>
   </footer>
 </div>
 
@@ -502,7 +744,7 @@
   const CONTATO = { exibido: '(11) 95333-4212', whatsapp: '5511953334212' };
   if (CONTATO) {
     document.getElementById('contatoValor').textContent = CONTATO.exibido;
-    document.getElementById('contatoZap').href = 'https://wa.me/' + CONTATO.whatsapp + '?text=' + encodeURIComponent('Olá! Sou de uma locadora de totens e quero saber como revender os jogos da Stand Play.');
+    document.getElementById('contatoZap').href = 'https://wa.me/' + CONTATO.whatsapp + '?text=' + encodeURIComponent('Olá! Quero saber mais sobre os jogos e as soluções da Stand Play para o meu estande.');
     document.getElementById('contato').hidden = false;
     document.getElementById('copiar').addEventListener('click', (e) => {
       const b = e.currentTarget;
@@ -541,6 +783,16 @@
     html += `<span class="${noPlay ? 'hl' : ''}">${c}</span>`;
   }
   cp.innerHTML = html;
+</script>
+<script>
+  // Aparecer ao rolar (sem efeito se o visitante pediu menos movimento).
+  const rev = document.querySelectorAll('.rev');
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('ok'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
+    rev.forEach((el, i) => { el.style.transitionDelay = (i % 3) * 70 + 'ms'; io.observe(el); });
+  } else {
+    rev.forEach((el) => el.classList.add('ok'));
+  }
 </script>
 </body>
 </html>
