@@ -3,9 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Stand Play · Jogos e experiências interativas para estandes</title>
-<meta name="description" content="Jogos de estande, cadastro com LGPD, avatar com IA, totens e telas, e projetos sob medida para feiras, eventos e convenções. Com a marca do expositor, sem internet, com relatório do evento.">
-<meta property="og:title" content="Stand Play · Jogos e experiências interativas para estandes">
+<title>Stand Play · Jogos para estande e totem interativo para eventos</title>
+<meta name="description" content="Jogos para estande e totem interativo para eventos: quiz, roleta, memória, catálogo interativo e avatar com IA, com a marca do expositor, sem internet e com relatório. Ativação de marca em feiras, convenções e eventos, no Brasil e fora.">
+<link rel="canonical" href="https://standplay.com.br/">
+<meta property="og:title" content="Stand Play · Jogos para estande e totem interativo para eventos">
 <meta property="og:description" content="O estande que todo mundo para para jogar: jogos, cadastro com LGPD, avatar com IA, totens e telas, projetos sob medida.">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#121631">
@@ -238,6 +239,7 @@
   .passos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; counter-reset: p; list-style: none; padding: 0; margin: 0; }
   .passos li { background: var(--papel); border: 1px solid var(--linha); border-radius: 18px; padding: 22px; }
   .passos li::before { counter-increment: p; content: counter(p); display: grid; place-items: center; width: 40px; height: 40px; border-radius: 10px; background: var(--placa); color: var(--placa-tinta); font: 800 20px/1 var(--fonte-display); margin-bottom: 16px; }
+  .passos.seis { grid-template-columns: repeat(3, 1fr); }
   .passos h3 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
   .passos p { margin: 0; color: var(--tinta-suave); font-size: 15px; }
   .relatorio-quadro { border-radius: 20px; overflow: hidden; border: 1px solid var(--linha); background: #F4F5F7; box-shadow: var(--sombra); }
@@ -276,11 +278,11 @@
     .ficha { grid-template-columns: 1fr 1fr; }
     .ficha div:not(:nth-child(3n)) { padding-right: 0; }
     .ficha div:nth-child(odd) { padding-right: 22px; }
-    .passos, .aparelhos, .extras { grid-template-columns: 1fr 1fr; }
+    .passos, .passos.seis, .aparelhos, .extras { grid-template-columns: 1fr 1fr; }
     .avatar, .totem-ficha, .parceria { grid-template-columns: 1fr; }
   }
   @media (max-width: 560px) {
-    .solucoes, .jogos, .ficha, .passos, .aparelhos, .medida, .extras, .modos, .lgpd { grid-template-columns: 1fr; }
+    .solucoes, .jogos, .ficha, .passos, .passos.seis, .aparelhos, .medida, .extras, .modos, .lgpd { grid-template-columns: 1fr; }
     .ficha div:nth-child(odd) { padding-right: 0; }
     .contato { padding: 28px; }
     .parceria { padding: 24px; }
@@ -306,6 +308,7 @@
       <li><a href="#totens">Totens</a></li>
       <li><a href="#medida">Sob medida</a></li>
       <li><a href="#como">Como funciona</a></li>
+      <li><a href="blog/">Blog</a></li>
     </ul>
     <a class="btn p" href="#contato">Falar com a gente</a>
   </div>
@@ -325,7 +328,7 @@
   <div class="casca">
     <section class="hero">
       <div>
-        <p class="rotulo">Jogos e experiências interativas para estandes</p>
+        <p class="rotulo">Jogos para estande e totem interativo para eventos</p>
         <h1>O estande que todo mundo <mark>para pra jogar</mark>.</h1>
         <p class="lede">Jogo com a marca do expositor, cadastro com a LGPD resolvida, avatar com IA, totens e telas, e projeto sob medida. Para expositores, agências e locadoras de totem. Tudo roda sem internet e termina com o relatório do evento.</p>
         <div class="acoes">
@@ -412,7 +415,7 @@
     <div class="cab rev">
       <div>
         <p class="rotulo">O cardápio</p>
-        <h2>Seis jogos, um minuto cada</h2>
+        <h2>Seis jogos para feiras e eventos, um minuto cada</h2>
       </div>
       <p>Cada um ganha as cores, o logo e o conteúdo do expositor. As demos abaixo usam a Zion Farm como cliente de exemplo.</p>
     </div>
@@ -490,7 +493,7 @@
       </article>
       <article class="jogo rev">
         <div class="arte"><span class="a-emo">📖</span></div>
-        <h3>Catálogo interativo</h3>
+        <h3>Catálogo interativo para totem</h3>
         <p>Os produtos do expositor na tela, por categoria, com a ficha de cada um. O visitante toca em "Quero saber mais" e deixa o contato. A planilha sai com o produto que cada pessoa pediu, e o relatório mostra os mais pedidos.</p>
         <span class="ideal">Ideal para: estande sem brinde, catálogo grande, visitante técnico</span>
         <div class="acoes-jogo"><button class="btn p" type="button" data-demo="catalogo">Ver</button><a class="tc" href="demos/catalogo.html" target="_blank" rel="noopener">Tela cheia ↗</a></div>
@@ -515,7 +518,7 @@
     <div class="cab rev">
       <div>
         <p class="rotulo">Avatar com IA</p>
-        <h2>Um apresentador digital que fala pela marca</h2>
+        <h2>Avatar com IA para eventos: um apresentador digital que fala pela marca</h2>
       </div>
       <p>No totem ou numa sala imersiva: um personagem 3D com a cara do expositor recebe o visitante, apresenta o produto e responde perguntas. Ele só diz o que o expositor aprovou.</p>
     </div>
@@ -555,7 +558,7 @@
     <div class="cab rev">
       <div>
         <p class="rotulo">Totens e telas</p>
-        <h2>Em que aparelho o jogo roda</h2>
+        <h2>Totem interativo para eventos: em que aparelho o jogo roda</h2>
       </div>
       <p>O jogo entra no totem que você já tem, e o mesmo arquivo se ajusta sozinho à tela deitada, à TV do estande e ao celular. Não tem totem? Veja a parceria logo abaixo.</p>
     </div>
@@ -590,7 +593,7 @@
       <div>
         <p class="rotulo" style="color:var(--placa)">Não tem totem?</p>
         <h3>A gente cuida do aparelho também</h3>
-        <p>Temos uma empresa parceira especializada em locação para eventos. Você fecha com a Stand Play e recebe o totem com o jogo já instalado e testado: um contato só, do orçamento à retirada no fim da feira.</p>
+        <p>A <strong>North Work Locações</strong>, nossa parceira em locação para eventos, fornece o aparelho. Você fecha com a Stand Play e recebe o totem com o jogo já instalado e testado: um contato só, do orçamento à retirada no fim da feira.</p>
       </div>
       <ul>
         <li>Totem touch em pé ou deitado, 43" e 55"</li>
@@ -632,7 +635,7 @@
     <div class="cab rev">
       <div>
         <p class="rotulo">Projeto sob medida</p>
-        <h2>Quando o estande pede uma ideia só dele</h2>
+        <h2>Ativação de marca em estande: quando o projeto pede uma ideia só dele</h2>
       </div>
       <p>Lançamento, ativação de marca, convenção com centenas de pessoas: construímos a mecânica do zero, em cima do mesmo motor que já faz cadastro, brinde e relatório.</p>
     </div>
@@ -694,15 +697,33 @@
     <div class="cab rev">
       <div>
         <p class="rotulo">Como funciona</p>
-        <h2>Do briefing ao estande</h2>
+        <h2>Seis passos, mais simples do que parece</h2>
       </div>
+      <p>Da primeira conversa ao jogo instalado no totem. O relógio começa quando o briefing está completo, e cada etapa termina com a sua aprovação.</p>
     </div>
-    <ol class="passos">
-      <li class="rev"><h3>Briefing numa mensagem</h3><p>Objetivo, marca, brindes e conteúdo com fonte. Abrimos um grupo e pedimos tudo de uma vez.</p></li>
-      <li class="rev"><h3>Prévia no celular</h3><p>O expositor joga o próprio jogo pelo celular antes de qualquer coisa ir para o evento.</p></li>
-      <li class="rev"><h3>Aprovação item por item</h3><p>Cada pergunta, resposta, brinde e texto de privacidade é conferido com o expositor.</p></li>
-      <li class="rev"><h3>No evento</h3><p>App testado no totem, guia de uma página para o operador e relatório no fim de cada dia.</p></li>
+    <ol class="passos seis">
+      <li class="rev"><h3>Reunião de apresentação</h3><p>Você apresenta o projeto para a Stand Play: evento, público, objetivo e o que o visitante precisa levar.</p></li>
+      <li class="rev"><h3>Proposta comercial</h3><p>Valores e formas de pagamento por escrito. Jogo do cardápio tem preço fechado; projeto personalizado, sob consulta.</p></li>
+      <li class="rev"><h3>Briefing para o desenvolvimento</h3><p>Marca, cores, conteúdo com fonte, brindes e os campos do cadastro, numa mensagem só.</p></li>
+      <li class="rev"><h3>Demo para ajustes</h3><p>Você joga a demonstração no celular, pede as alterações e aprova pergunta por pergunta.</p></li>
+      <li class="rev"><h3>Aprovação final</h3><p>Checklist assinado: textos, respostas, brindes e política de privacidade conferidos.</p></li>
+      <li class="rev"><h3>Envio do aplicativo</h3><p>App e link entregues, com o guia do operador. Instala no seu totem ou no da nossa parceira.</p></li>
     </ol>
+  </section>
+
+  <section class="secao" style="padding-top:0">
+    <div class="cab rev">
+      <div>
+        <p class="rotulo">Quem já está com a gente</p>
+        <h2>Marcas e parceiros</h2>
+      </div>
+      <p>Atendemos o Brasil inteiro e fora do Brasil: o jogo vai por aplicativo e link. Os cases com foto e número entram aqui a cada evento.</p>
+    </div>
+    <div class="ficha rev">
+      <div><h3>Zion Farm</h3><p>Insumos para cultivo orgânico. É o cliente de exemplo de todas as demos: quiz, memória, roleta, raspadinha, reflexo, caça-palavras, cadastro, pesquisa e catálogo.</p></div>
+      <div><h3>North Work Locações</h3><p>Locadora de totens e telas para eventos em São Paulo. Parceira da Stand Play: fornece o aparelho e revende os jogos com a marca dela.</p></div>
+      <div><h3>O próximo pode ser o seu</h3><p>Cases com número de cadastros, aceites e brindes entram aqui com autorização do expositor.</p></div>
+    </div>
   </section>
 
   <section class="secao" style="padding-top:0">
@@ -725,7 +746,7 @@
 
   <section class="secao" id="contato" hidden style="padding-top:0">
     <div class="contato rev">
-      <h2>Quer isso no seu estande?</h2>
+      <h2>Quer isso no seu estande?</h2><p style="margin:8px 0 0;font-size:15px">Atendimento de segunda a sexta, das 9h às 18h. Brasil inteiro e fora do Brasil.</p>
       <div class="contato-acoes">
         <div><p class="rotulo" style="color:inherit;opacity:.7;margin:0 0 6px">WhatsApp</p><div class="val" id="contatoValor"></div></div>
         <a class="btn escuro" id="contatoZap" href="#" target="_blank" rel="noopener">Chamar no WhatsApp</a>
@@ -735,7 +756,7 @@
   </section>
 
   <footer class="rodape">
-    <span>© 2026 Stand Play · jogos e experiências interativas para estandes · (11) 95333-4212</span>
+    <span>© 2026 Stand Play · jogos para estande e totem interativo para eventos · Alameda dos Guatás, 543, Saúde, São Paulo, SP · (11) 95333-4212 · seg. a sex., 9h às 18h · <a href="privacidade.html">Privacidade e termos</a> · <a href="blog/">Blog</a></span>
     <span>As demos usam a Zion Farm como exemplo de cliente, com brindes fictícios. O que você digitar numa demo fica só no seu navegador.</span>
   </footer>
 </div>
@@ -751,7 +772,7 @@
   const CONTATO = { exibido: '(11) 95333-4212', whatsapp: '5511953334212' };
   if (CONTATO) {
     document.getElementById('contatoValor').textContent = CONTATO.exibido;
-    document.getElementById('contatoZap').href = 'https://wa.me/' + CONTATO.whatsapp + '?text=' + encodeURIComponent('Olá! Quero saber mais sobre os jogos e as soluções da Stand Play para o meu estande.');
+    document.getElementById('contatoZap').href = 'https://wa.me/' + CONTATO.whatsapp + '?text=' + encodeURIComponent('Olá! Vi o site da Stand Play e quero um orçamento de jogo para o meu estande.');
     document.getElementById('contato').hidden = false;
     document.getElementById('copiar').addEventListener('click', (e) => {
       const b = e.currentTarget;
